@@ -1,51 +1,52 @@
-//package umm3601.todo;
-//
-//import com.google.gson.Gson;
-//import com.mongodb.MongoClient;
-//import com.mongodb.client.FindIterable;
-//import com.mongodb.client.MongoDatabase;
-//import com.mongodb.util.JSON;
-//import org.bson.Document;
-//
-//import java.io.FileReader;
-//import java.io.IOException;
-//import java.util.Arrays;
-//import java.util.Map;
-//
-//public class toDoController {
-//
-//    private Todo[] todos;
-//
-//    public toDoController() throws IOException {
-//        Gson gson = new Gson();
-//        FileReader reader = new FileReader("src/main/data/todos.json");
-//        todos = gson.fromJson(reader, Todo[].class);
-//        MongoClient mongoClient = new MongoClient(); // Defaults!
-//
-//        // Try connecting to a database
-//        MongoDatabase db = mongoClient.getDatabase("test");
-//
-//        todoCollection = db.getCollection("todos");
-//
-//    }
-//
-//    // List users
-//    public String listTodos(Map<String, String[]> queryParams) {
-//        Document filterDoc = new Document();
-//
-//        if (queryParams.containsKey("age")) {
-//            int targetAge = Integer.parseInt(queryParams.get("age")[0]);
-//            filterDoc = filterDoc.append("age", targetAge);
-//        }
-//
-//        FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
-//
-//        return JSON.serialize(matchingUsers);
-//    }
-//
-//
-//
-//
+package umm3601.todo;
+
+import com.google.gson.Gson;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.util.JSON;
+import org.bson.Document;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+
+import static com.mongodb.client.model.Filters.eq;
+
+public class toDoController {
+
+    private final MongoCollection<Document> todoCollection;
+
+    public toDoController() throws IOException {
+
+        MongoClient mongoClient = new MongoClient(); // Defaults!
+
+        // Try connecting to a database
+        MongoDatabase db = mongoClient.getDatabase("test");
+
+        todoCollection = db.getCollection("todos");
+
+    }
+
+    // List users
+    public String listToDos(Map<String, String[]> queryParams) {
+        Document filterDoc = new Document();
+
+        if (queryParams.containsKey("owner")) {
+            String owner = queryParams.get("owner")[0];
+            filterDoc = filterDoc.append("owner", owner);
+        }
+
+        FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
+
+        return JSON.serialize(matchingTodos);
+    }
+}
+
+
+
 //
 //    // List Todos
 //    public Todo[] listToDos(Map<String, String[]> queryParams) {
