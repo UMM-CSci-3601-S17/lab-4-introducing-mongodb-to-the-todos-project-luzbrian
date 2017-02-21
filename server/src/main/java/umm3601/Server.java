@@ -6,11 +6,16 @@ import java.io.IOException;
 
 import static spark.Spark.*;
 
+//import umm3601.todo.toDoController;
+
+
 
 public class Server {
     public static void main(String[] args) throws IOException {
 
         UserController userController = new UserController();
+       // toDoController toDoController = new toDoController();
+
 
         options("/*", (request, response) -> {
 
@@ -54,6 +59,19 @@ public class Server {
             res.type("application/json");
             return userController.getAverageAgeByCompany();
         });
+//
+//        // List todos
+//        get("api/todos", (req, res) -> {
+//            res.type("application/json");
+//            return toDoController.listToDos(req.queryMap().toMap());
+//        });
+//
+//        // See specific todo
+//        get("api/todos/:id", (req, res) -> {
+//            res.type("application/json");
+//            String id = req.params("id");
+//            return toDoController.getToDo(id);
+//        });
 
         // Handle "404" file not found requests:
         notFound((req, res) -> {

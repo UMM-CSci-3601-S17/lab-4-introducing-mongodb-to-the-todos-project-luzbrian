@@ -1,0 +1,12 @@
+<ul class="list-group">
+    <li class="list-group-item list-group-item-info">
+        <input #input type="text" placeholder="Filter by owner" (input)="searchTerm = $event.target.value">
+        <input #input type="boolean" placeholder="Status, 0 or 1" (input)="targetStatus = $event.target.value">
+        <input #input type="text" placeholder="Category" (input)="targetCategory = $event.target.value">
+        <input #input type="text" placeholder="Contents of Body" (input)="targetContains = $event.target.value">
+    </li>
+    <li class="list-group-item list-group-item-info">Todo Owner</li>
+    <li *ngFor="let todo of todos | filterBy: {owner: searchTerm} | filterBy: { status: targetStatus } | filterBy: { category: targetCategory } | filterBy: { body: targetContains }" class="list-group-item">
+        You found {{ todo.owner }}'s Todo, which is {{ todo.status }}ly complete. <br> The following is of category {{ todo.category }}: {{ todo.body }}
+    </li>
+</ul>
