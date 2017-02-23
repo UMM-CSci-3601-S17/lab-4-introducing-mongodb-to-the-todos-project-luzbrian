@@ -66,12 +66,12 @@ public class Server {
             return toDoController.listToDos(req.queryMap().toMap());
         });
 
-//        // See specific todo
-//        get("api/todos/:id", (req, res) -> {
-//            res.type("application/json");
-//            String id = req.params("id");
-//            return toDoController.getToDo(id);
-//        });
+        // See specific todo
+        get("api/todos/:id", (req, res) -> {
+            res.type("application/json");
+            String id = req.params("id");
+            return toDoController.getTodo(id);
+        });
 
         // Handle "404" file not found requests:
         notFound((req, res) -> {

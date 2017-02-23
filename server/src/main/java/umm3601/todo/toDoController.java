@@ -7,10 +7,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -38,13 +40,42 @@ public class toDoController {
             String owner = queryParams.get("owner")[0];
             filterDoc = filterDoc.append("owner", owner);
         }
+         //Filter category if defined
+        if(queryParams.containsKey("category")) {
+            String category = queryParams.get("category")[0];
+                    filterDoc = filterDoc.append("category", category);
+                }
+         //Filter status if defined
+        if(queryParams.containsKey("status")) {
+            boolean status = Boolean.parseBoolean(queryParams.get("status")[0]);
+            filterDoc = filterDoc.append("status", status);
+        }
+
+        //Filter contains if defined
+        if (queryParams.containsKey("contains")) {
+            String contains = queryParams.get("contains")[0];
+            filterDoc = filterDoc.append("contains", contains);
+        }
+
 
         FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
 
         return JSON.serialize(matchingTodos);
     }
-}
 
+    // Get a single todo
+    public String getTodo(String id) {
+        FindIterable<Document> jsonTodos
+                = todoCollection
+                .find(eq("_id", id));
+
+        Iterator<Document> iterator = jsonTodos.iterator();
+
+        Document todo = iterator.next();
+
+        return todo.toJson();
+    }
+}
 
 
 //
@@ -58,11 +89,11 @@ public class toDoController {
 //            filteredTodos = filterTodosByStatus(filteredTodos, status);
 //        }
 //
-//        // Filter contains if defined
+//        ;
+//        }// Filter contains if defined
 //        if(queryParams.containsKey("contains")) {
 //            String contains = queryParams.get("contains")[0];
-//            filteredTodos = filterTodosByContains(filteredTodos, contains);
-//        }
+//            filteredTodos = filterTodosByContains(filteredTodos, contains)
 //
 //        // Filter owner if defined
 //        if(queryParams.containsKey("owner")) {
@@ -84,13 +115,13 @@ public class toDoController {
 //        return Arrays.stream(todos).filter(x -> x._id.equals(id)).findFirst().orElse(null);
 //    }
 //
-//    public Todo[] filterTodosByStatus(Todo[] filteredTodos, String status) {
+//    public Todo[] filterTodosByStatus(Document document, String status) {
 //        boolean Status = status.equals("complete") ? true : false;
-//        return Arrays.stream(filteredTodos).filter(x -> x.status == Status).toArray(Todo[]::new);
+//        return Arrays.stream(document).filter(x -> x.status == Status).toArray(Todo[]::new);
 //    }
 //
-//    public Todo[] filterTodosByContains(Todo[] filteredTodos, String contain) {
-//        return Arrays.stream(filteredTodos).filter(x -> x.body.contains(contain)).toArray(Todo[]::new);
+//    public Document filterTodosByContains(Document filteredTodos, String contain) {
+//        return filteredTodos.filter(x -> x.body.contains(contain)).toArray(Todo[]::new);
 //    }
 //
 //    public Todo[] filterTodosByOwner(Todo[] filteredTodos, String owner) {

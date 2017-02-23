@@ -9,5 +9,6 @@ public class Todo {
     boolean status;
     String body;
     String category;
+
 }
 
