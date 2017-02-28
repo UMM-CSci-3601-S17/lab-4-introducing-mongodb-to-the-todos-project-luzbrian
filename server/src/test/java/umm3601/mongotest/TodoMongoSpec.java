@@ -17,22 +17,7 @@ import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
 import static org.junit.Assert.*;
 
-/**
- * Some simple "tests" that demonstrate our ability to
- * connect to a Mongo database and run some basic queries
- * against it.
- *
- * Note that none of these are actually tests of any of our
- * code; they are mostly demonstrations of the behavior of
- * the MongoDB Java libraries. Thus if they test anything,
- * they test that code, and perhaps our understanding of it.
- *
- * To test "our" code we'd want the tests to confirm that
- * the behavior of methods in things like the UserController
- * do the "right" thing.
- *
- * Created by mcphee on 20/2/17.
- */
+
 public class TodoMongoSpec {
 
     private MongoCollection<Document> todoDocuments;
@@ -45,22 +30,22 @@ public class TodoMongoSpec {
         todoDocuments.drop();
         List<Document> testTodos = new ArrayList<>();
         testTodos.add(Document.parse("{\n" +
-                "                    name: \"Chris\",\n" +
-                "                    age: 25,\n" +
-                "                    company: \"UMM\",\n" +
-                "                    email: \"chris@this.that\"\n" +
+                "                    owner: \"Chris\",\n" +
+                "                    status: true,\n" +
+                "                    body: \"this is Chris's body\",\n" +
+                "                    category: \"homework\"\n" +
                 "                }"));
         testTodos.add(Document.parse("{\n" +
-                "                    name: \"Pat\",\n" +
-                "                    age: 37,\n" +
-                "                    company: \"IBM\",\n" +
-                "                    email: \"pat@something.com\"\n" +
+                "                    owner: \"Pat\",\n" +
+                "                    status: true,\n" +
+                "                    body: \"this is Pat's body\",\n" +
+                "                    category: \"software design\"\n" +
                 "                }"));
         testTodos.add(Document.parse("{\n" +
-                "                    name: \"Jamie\",\n" +
-                "                    age: 37,\n" +
-                "                    company: \"Frogs, Inc.\",\n" +
-                "                    email: \"jamie@frogs.com\"\n" +
+                "                    owner: \"Jamie\",\n" +
+                "                    status: false,\n" +
+                "                    body: \"this is Jamie's body\",\n" +
+                "                    email: \"software design\"\n" +
                 "                }"));
         todoDocuments.insertMany(testTodos);
     }

@@ -17,21 +17,21 @@ export class TodoListService {
     }
 
     getTodoByOwner(owner: string): Observable<Todo> {
-        return this.http.request(this.todoUrl+ "?=" + owner).map(res => res.json());
+        return this.http.request(this.todoUrl+ "?owner=" + owner).map(res => res.json());
     }
 
     getTodoByStatus(status: string): Observable<Todo> {
-        return this.http.request(this.todoUrl+ "?=" + status).map(res => res.json());
+        return this.http.request(this.todoUrl+ "?status=" + status).map(res => res.json());
     }
 
     getTodoByCategory(category: string): Observable<Todo> {
-        return this.http.request(this.todoUrl+ "?=" + category).map(res => res.json());
+        return this.http.request(this.todoUrl+ "?category=" + category).map(res => res.json());
     }
 
     //Need this to work on the server side first
-     getTodoByContains(contains: string): Observable<Todo> {
-        return this.http.request(this.todoUrl+ "?=" + owner).map(res => res.json());
-    }
+    //  getTodoByContains(contains: string): Observable<Todo> {
+    //     return this.http.request(this.todoUrl+ "?=" + ).map(res => res.json());
+    // }
 
 
 }

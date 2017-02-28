@@ -2,9 +2,11 @@ package umm3601.todo;
 
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.*;
 import com.mongodb.util.JSON;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bson.Document;
@@ -16,10 +18,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import com.mongodb.Block;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Filters;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -44,24 +42,6 @@ public class toDoController {
 
         todoCollection = db.getCollection("todos");
 
- //Trying to Figure out how aggregate works to get todo summary to work
-//        todoCollection.aggregate(
-//                Arrays.asList(
-//                        Aggregates.project(
-//                                Projections.fields(
-//                                        Projections.excludeId(),
-//                                        Projections.include("status"),
-//
-//                                        Projections.computed(
-//                                                "categoriesPercentComplete",
-//                                                new Document("$arrayElemAt", Arrays.asList("$category", 0))
-//                                        )
-//                                )
-//                        )
-//                )
-//        ).forEach(printBlock);
-
-
     }
 
     // List users
@@ -73,14 +53,13 @@ public class toDoController {
             filterDoc = filterDoc.append("owner", owner);
         }
 
-         //Filter status if defined
-        if(queryParams.containsKey("status")) {
-           Boolean temp;
-            String status= queryParams.get("status")[0];
-            if (status.equals("complete")){
-               temp = true;
-            }
-            else {
+        //Filter status if defined
+        if (queryParams.containsKey("status")) {
+            Boolean temp;
+            String status = queryParams.get("status")[0];
+            if (status.equals("complete")) {
+                temp = true;
+            } else {
                 temp = false;
             }
             filterDoc = filterDoc.append("status", temp);
@@ -93,7 +72,7 @@ public class toDoController {
 //            filterDoc = filterDoc.append("contains", containsWord);
 //        }
         //Filter category if defined
-        if(queryParams.containsKey("category")) {
+        if (queryParams.containsKey("category")) {
             String category = queryParams.get("category")[0];
             filterDoc = filterDoc.append("category", category);
         }
@@ -117,20 +96,25 @@ public class toDoController {
         return todo.toJson();
     }
 
+}
 
-//Trying to aggregate todoSummary
-    public String getTodoSummary(Map<String, String[]> queryParams) {
 
-        if (queryParams.containsKey("todoSummary")) {
-            todoCollection.aggregate(
-                    Arrays.asList(
-                            Aggregates.match(Filters.eq("status", "complete")),
-                                Aggregates.group("$category", Accumulators.sum("categoriesPercentComplete", 1))
-                                //Aggregates.group("$owner", Accumulators.sum("ownerPercentComplete", 1))
-                    )
-            ).forEach(printBlock);
-
-        }
-            return JSON.serialize(printBlock);
-        }
-    }
+    //Trying to aggregate todoSummary
+//    public String getTodoSummary(Map<String, String[]> queryParams) {
+//
+//        AggregateIterable<Document> output = todoCollection.aggregate(
+//                    Arrays.asList(
+//                            Aggregates.match(Filters.eq("owner", "Blanche")),
+//                                Aggregates.group("$owner", Accumulators.sum("categoriesPercentComplete", 1))
+//                                //Aggregates.group("$owner", Accumulators.sum("ownerPercentComplete", 1))
+//                    )
+//            ).forEach(printBlock);
+//
+//
+//            //return JSON.serialize(printBlock);
+//
+//
+//                new Document("$owner", "$Blanche")
+//
+//        }
+//}

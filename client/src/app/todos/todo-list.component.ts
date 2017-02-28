@@ -26,18 +26,18 @@ export class TodoListComponent implements OnInit {
             }
         );
 
-          this.todoListService.getTodosByOwner().subscribe(
-            todos => this.owners = owners,
-            err => {
-                console.log(err);
-            }
-        );
-
-        this.todoListService.getTodosByCategory().subscribe(
-            todos => this.category = category,
-            err => {
-                console.log(err);
-            }
-        );
+        //   this.todoListService.getTodoByOwner().subscribe(
+        //     owners => this.owners = owners,
+        //     err => {
+        //         console.log(err);
+        //     }
+        // );
+        //
+        // this.todoListService.getTodoByCategory().subscribe(
+        //     category => this.category = category,
+        //     err => {
+        //         console.log(err);
+        //     }
+        // );
     }
 }
