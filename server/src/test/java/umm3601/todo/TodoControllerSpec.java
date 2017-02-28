@@ -12,6 +12,7 @@ import org.bson.json.JsonReader;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
+import sun.font.TrueTypeFont;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,30 +34,30 @@ public class TodoControllerSpec
         List<Document> testTodos = new ArrayList<>();
         testTodos.add(Document.parse("{\n" +
                 "                    owner: \"Chris\",\n" +
-                "                    age: 25,\n" +
-                "                    company: \"UMM\",\n" +
-                "                    email: \"chris@this.that\"\n" +
+                "                    status: true,\n" +
+                "                    body: \"this is Chris's body\",\n" +
+                "                    category: \"homework\"\n" +
                 "                }"));
         testTodos.add(Document.parse("{\n" +
-                "                    name: \"Pat\",\n" +
-                "                    age: 37,\n" +
-                "                    company: \"IBM\",\n" +
-                "                    email: \"pat@something.com\"\n" +
+                "                    owner: \"Pat\",\n" +
+                "                    status: true,\n" +
+                "                    body: \"this is Pat's body\",\n" +
+                "                    category: \"software design\"\n" +
                 "                }"));
         testTodos.add(Document.parse("{\n" +
-                "                    name: \"Jamie\",\n" +
-                "                    age: 37,\n" +
-                "                    company: \"Frogs, Inc.\",\n" +
-                "                    email: \"jamie@frogs.com\"\n" +
+                "                    owner: \"Jamie\",\n" +
+                "                    status: false,\n" +
+                "                    body: \"this is Jamie's body\",\n" +
+                "                    email: \"software design\"\n" +
                 "                }"));
         ObjectId samsId = new ObjectId();
         BasicDBObject sam = new BasicDBObject("_id", samsId);
-        sam = sam.append("name", "Sam")
-                .append("age", 45)
-                .append("company", "Frogs, Inc.")
-                .append("email", "sam@frogs.com");
+        sam = sam.append("owner", "Sam")
+                .append("status",true)
+                .append("body", "this is Sam's body ")
+                .append("category", "texting");
         samsIdString = samsId.toHexString();
-        todoDocuments.insertMany(testTodos;
+        todoDocuments.insertMany(testTodos);
         todoDocuments.insertOne(Document.parse(sam.toJson()));
 
         // It might be important to construct this _after_ the DB is set up
@@ -79,9 +80,9 @@ public class TodoControllerSpec
         return arrayReader.decode(reader, DecoderContext.builder().build());
     }
 
-    private static String getName(BsonValue val) {
+    private static String getOwner(BsonValue val) {
         BsonDocument doc = val.asDocument();
-        return ((BsonString) doc.get("name")).getValue();
+        return ((BsonString) doc.get("owner")).getValue();
     }
 
     @Test
@@ -93,34 +94,52 @@ public class TodoControllerSpec
         assertEquals("Should be 4 users", 4, docs.size());
         List<String> names = docs
                 .stream()
-                .map(TodoControllerSpec::getName)
+                .map(TodoControllerSpec::getOwner)
                 .sorted()
                 .collect(Collectors.toList());
         List<String> expectedNames = Arrays.asList("Chris", "Jamie", "Pat", "Sam");
-        assertEquals("Names should match", expectedNames, names);
+        assertEquals("Owner names should match", expectedNames, names);
     }
 
     @Test
-    public void getUsersWhoAre37() {
+    public void getCategory() {
         Map<String, String[]> argMap = new HashMap<>();
-        argMap.put("age", new String[] { "37" });
+        argMap.put("category", new String[] { "software design" });
         String jsonResult = todoController.listToDos(argMap);
         BsonArray docs = parseJsonArray(jsonResult);
 
-        assertEquals("Should be 2 users", 2, docs.size());
-        List<String> names = docs
+        assertEquals("Should be 2 todos", 2, docs.size());
+        List<String> todos = docs
                 .stream()
-                .map(TodoControllerSpec::getName)
+                .map(TodoControllerSpec::getOwner)
                 .sorted()
                 .collect(Collectors.toList());
-        List<String> expectedNames = Arrays.asList("Jamie", "Pat");
-        assertEquals("Names should match", expectedNames, names);
+        List<String> expectedOwners = Arrays.asList("Jamie", "Pat");
+        assertEquals("Todos should match", expectedOwners, todos);
     }
+
+    // Trying to make the test to test status 
+//    @Test
+//    public void getStatus() {
+//        Map<String, String[]> argMap = new HashMap<>();
+//        argMap.put("status", new boolean[] { true });
+//        String jsonResult = todoController.listToDos(argMap);
+//        BsonArray docs = parseJsonArray(jsonResult);
+//
+//        assertEquals("Should be 2 todos", 2, docs.size());
+//        List<String> todos = docs
+//                .stream()
+//                .map(TodoControllerSpec::getOwner)
+//                .sorted()
+//                .collect(Collectors.toList());
+//        List<String> expectedOwners = Arrays.asList("Jamie", "Pat");
+//        assertEquals("Todos should match", expectedOwners, todos);
+//    }
 
     @Test
     public void getSamById() {
         String jsonResult = todoController.getTodo(samsIdString);
         Document sam = Document.parse(jsonResult);
-        assertEquals("Name should match", "Sam", sam.get("name"));
+        assertEquals("Name should match", "Sam", sam.get("owner"));
     }
 }
