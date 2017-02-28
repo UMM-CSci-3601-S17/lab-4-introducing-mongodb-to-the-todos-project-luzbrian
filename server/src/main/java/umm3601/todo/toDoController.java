@@ -6,6 +6,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -43,14 +44,20 @@ public class toDoController {
 
         todoCollection = db.getCollection("todos");
 
-// Trying to Figure out how aggregate works to get todo summary to work
+ //Trying to Figure out how aggregate works to get todo summary to work
 //        todoCollection.aggregate(
 //                Arrays.asList(
-//                        Aggregates.match(Filters.eq("status", "complete")),
+//                        Aggregates.project(
+//                                Projections.fields(
+//                                        Projections.excludeId(),
+//                                        Projections.include("status"),
 //
-//
-//                        Aggregates.group("owners", Accumulators.sum("count", 1))
-//                        Aggregates.group("category", Accumulators.sum("count", 1))
+//                                        Projections.computed(
+//                                                "categoriesPercentComplete",
+//                                                new Document("$arrayElemAt", Arrays.asList("$category", 0))
+//                                        )
+//                                )
+//                        )
 //                )
 //        ).forEach(printBlock);
 
@@ -68,14 +75,23 @@ public class toDoController {
 
          //Filter status if defined
         if(queryParams.containsKey("status")) {
-            boolean status = Boolean.parseBoolean(queryParams.get("status")[0]);
-            filterDoc = filterDoc.append("status", status);
+           Boolean temp;
+            String status= queryParams.get("status")[0];
+            if (status.equals("complete")){
+               temp = true;
+            }
+            else {
+                temp = false;
+            }
+            filterDoc = filterDoc.append("status", temp);
         }
         //Filter contains if defined
-        if (queryParams.containsKey("contains")) {
-            String contains = queryParams.get("contains")[0];
-            filterDoc = filterDoc.append("contains", contains);
-        }
+
+        // Going to let angular filter the body!
+//        if (queryParams.containsKey("contains")) {
+//            String containsWord = queryParams.get("contains")[0];
+//            filterDoc = filterDoc.append("contains", containsWord);
+//        }
         //Filter category if defined
         if(queryParams.containsKey("category")) {
             String category = queryParams.get("category")[0];
@@ -100,6 +116,7 @@ public class toDoController {
 
         return todo.toJson();
     }
+
 }
 
 
