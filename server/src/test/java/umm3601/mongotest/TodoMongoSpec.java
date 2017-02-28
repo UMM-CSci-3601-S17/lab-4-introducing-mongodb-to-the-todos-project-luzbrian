@@ -157,7 +157,7 @@ public class TodoMongoSpec {
     }
 
     @Test
-    public void ownnerCounts() {
+    public void ownerCounts() {
         AggregateIterable<Document> documents
                 = todoDocuments.aggregate(
                 Arrays.asList(

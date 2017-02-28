@@ -73,6 +73,11 @@ public class Server {
             return toDoController.getTodo(id);
         });
 
+        get("api/todoSummary", (req, res) -> {
+            res.type("application/json");
+            return toDoController.getTodoSummary(req.queryMap().toMap());
+        });
+
         // Handle "404" file not found requests:
         notFound((req, res) -> {
             res.type("text");
