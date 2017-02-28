@@ -11,6 +11,8 @@ import { FilterBy } from "../users/filter.pipe";
 
 export class TodoListComponent implements OnInit {
     public todos: Todo[];
+    public owners: Todo[];
+    public category: Todo[];
 
     constructor(private todoListService: TodoListService) {
         // this.todos = this.todoListService.getTodos();
@@ -19,6 +21,20 @@ export class TodoListComponent implements OnInit {
     ngOnInit(): void {
         this.todoListService.getTodos().subscribe(
             todos => this.todos = todos,
+            err => {
+                console.log(err);
+            }
+        );
+
+          this.todoListService.getTodosByOwner().subscribe(
+            todos => this.owners = owners,
+            err => {
+                console.log(err);
+            }
+        );
+
+        this.todoListService.getTodosByCategory().subscribe(
+            todos => this.category = category,
             err => {
                 console.log(err);
             }
