@@ -118,7 +118,7 @@ public class TodoControllerSpec
         assertEquals("Todos should match", expectedOwners, todos);
     }
 
-    // Trying to make the test to test status 
+    // Trying to make the test to test status
 //    @Test
 //    public void getStatus() {
 //        Map<String, String[]> argMap = new HashMap<>();
