@@ -8,13 +8,13 @@
         <input #input type="text" placeholder="Filter by Owner" (input)="searchOwner= $event.target.value">
         <input #input type="text" placeholder="Filter by Body" (input)="searchBody= $event.target.value">
         <input #input type="text" placeholder="Filter by Category" (input)="searchCategory = $event.target.value">
-        <p>Status:
+        Status:
             <select #input  (input) = "searchStatus= $event.target.value">
                 <option value = ""></option>
                 <option value = 1>Complete</option>
                 <option value = 0>Incomplete</option>
             </select>
-        </p>
+
 
     </li>
     <li class="list-group-item list-group-item-info">Todos</li>

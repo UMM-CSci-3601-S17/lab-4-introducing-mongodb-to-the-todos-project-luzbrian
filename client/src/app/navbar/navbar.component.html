@@ -11,11 +11,17 @@
             <a class="navbar-brand" [routerLink]="['/']">Angular Spark Demo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav nav-pills">
                 <li><a [routerLink]="['/']">Home</a></li>
                 <li><a [routerLink]="['/kittens']">Kittens</a></li>
                 <li><a [routerLink]="['/users']">Users</a></li>
-                <li><a [routerLink]="['/todos']">Todos</a></li>
+                <li role="presentation" class="dropdown">
+                    <a [routerLink]="['/todos']" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Todos<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a [routerLink]="['/users']">Todo Summary</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
