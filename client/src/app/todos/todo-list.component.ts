@@ -9,14 +9,12 @@ import { FilterBy } from "../users/filter.pipe";
     providers: [ FilterBy ]
 })
 
-export class TodoListComponent {
+export class TodoListComponent implements OnInit{
     public todos: Todo[];
-    public filterOwner : string = "";
-    public filterCategory : string = "";
+    public searchOwner : string = "";
+    public searchCategory : string = "";
     public filterBody : string = "";
-    public filterStatus : string = "";
-    public sortBy : string = "";
-    private freakingOut : boolean = false;
+    public searchStatus : string = "";
 
     constructor(private todoListService: TodoListService) {
         // this.todos = this.todoListService.getTodos();
@@ -31,7 +29,7 @@ export class TodoListComponent {
     };
 
 
-    private requestData(owner: string, category: string, status: string, body: string): string {
+    private requestData(owner: string, category: string, status: string, ): string {
         var parameter1 = new Array();
         var searchAdd = "?";
         var parameters = "";
@@ -46,8 +44,8 @@ export class TodoListComponent {
         if (status != "")
             parameter1["status"] = status;
 
-        if (body != "")
-            parameter1["body"] = body;
+        // if (body != "")
+        //     parameter1["body"] = body;
 
 
         /**
@@ -66,8 +64,8 @@ export class TodoListComponent {
     }
 
     public request(owner: string, category: string, status: string, body: string) {
-        var req: string = this.requestData(owner, category, status, body);
-        this.todoListService.getTodos(owner, status, category).subscribe(
+        var req: string = this.requestData(owner, category, status);
+        this.todoListService.getTodos(this.searchOwner,this.searchCategory,this.searchStatus).subscribe(
             todos => this.todos = todos,
             err => {
                 console.log(err);

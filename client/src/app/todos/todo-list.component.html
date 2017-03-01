@@ -6,7 +6,7 @@
         <!--<input #input type="text" placeholder="Category" [(ngModel)]="searchCategory">-->
         <input #input type="text" placeholder="Filter by ID" (input)="searchID= $event.target.value">
         <input #input type="text" placeholder="Filter by Owner" (input)="searchOwner= $event.target.value">
-        <button (click) ="request(searcgOwner,searchCaterory,searchStatus,searchBody)">hit me</button>
+        <button (click) ="request(searchOwner,searchCategory,searchStatus)">hit me</button>
         <input #input type="text" placeholder="Filter by Body" (input)="searchBody= $event.target.value">
         <input #input type="text" placeholder="Filter by Category" (input)="searchCategory = $event.target.value">
         <br>
@@ -18,7 +18,7 @@
             </select>
     </li>
 
-    <div (click) ="request(searchOwner,searchCaterory,searchStatus,searchBody)" >
+    <div (click) ="request($event,$event,$event)" >
         <button >hit me</button>
     </div>
     <li class="list-group-item list-group-item-info">Todos</li>
