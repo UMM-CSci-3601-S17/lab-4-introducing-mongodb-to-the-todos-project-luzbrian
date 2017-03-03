@@ -122,10 +122,10 @@ public class UserControllerSpec
         assertEquals("Names should match", expectedNames, names);
     }
 
-    @Test
-    public void getSamById() {
-        String jsonResult = userController.getUser(samsIdString);
-        Document sam = Document.parse(jsonResult);
-        assertEquals("Name should match", "Sam", sam.get("name"));
-    }
+//    @Test
+//    public void getSamById() {
+//        String jsonResult = userController.getUser(samsIdString);
+//        Document sam = Document.parse(jsonResult);
+//        assertEquals("Name should match", "Sam", sam.get("name"));
+//    }
 }

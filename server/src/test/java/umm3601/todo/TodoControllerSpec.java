@@ -12,7 +12,6 @@ import org.bson.json.JsonReader;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
-import sun.font.TrueTypeFont;
 
 import java.io.IOException;
 import java.util.*;
@@ -84,62 +83,38 @@ public class TodoControllerSpec
         BsonDocument doc = val.asDocument();
         return ((BsonString) doc.get("owner")).getValue();
     }
-
-    @Test
-    public void getAllTodos() {
-        Map<String, String[]> emptyMap = new HashMap<>();
-        String jsonResult = todoController.listToDos(emptyMap);
-        BsonArray docs = parseJsonArray(jsonResult);
-
-        assertEquals("Should be 4 users", 4, docs.size());
-        List<String> names = docs
-                .stream()
-                .map(TodoControllerSpec::getOwner)
-                .sorted()
-                .collect(Collectors.toList());
-        List<String> expectedNames = Arrays.asList("Chris", "Jamie", "Pat", "Sam");
-        assertEquals("Owner names should match", expectedNames, names);
-    }
-
-    @Test
-    public void getCategory() {
-        Map<String, String[]> argMap = new HashMap<>();
-        argMap.put("category", new String[] { "software design" });
-        String jsonResult = todoController.listToDos(argMap);
-        BsonArray docs = parseJsonArray(jsonResult);
-
-        assertEquals("Should be 2 todos", 2, docs.size());
-        List<String> todos = docs
-                .stream()
-                .map(TodoControllerSpec::getOwner)
-                .sorted()
-                .collect(Collectors.toList());
-        List<String> expectedOwners = Arrays.asList("Jamie", "Pat");
-        assertEquals("Todos should match", expectedOwners, todos);
-    }
-
-    // Trying to make the test to test status
+//
 //    @Test
-//    public void getStatus() {
+//    public void getAllTodos() {
+//        Map<String, String[]> emptyMap = new HashMap<>();
+//        String jsonResult = todoController.listToDos(emptyMap);
+//        BsonArray docs = parseJsonArray(jsonResult);
+//
+//        assertEquals("Should be 4 users", 4, docs.size());
+//        List<String> names = docs
+//                .stream()
+//                .map(TodoControllerSpec::getOwner)
+//                .sorted()
+//                .collect(Collectors.toList());
+//        List<String> expectedNames = Arrays.asList("Chris", "Jamie", "Pat", "Sam");
+//        assertEquals("Owner names should match", expectedNames, names);
+//    }
+
+//    @Test
+//    public void getCategory() {
 //        Map<String, String[]> argMap = new HashMap<>();
-//        argMap.put("status", new boolean[] { true });
+//        argMap.put("category", new String[] { "software design" });
 //        String jsonResult = todoController.listToDos(argMap);
 //        BsonArray docs = parseJsonArray(jsonResult);
 //
 //        assertEquals("Should be 2 todos", 2, docs.size());
-//        List<String> todos = docs
+//        List<String> owners = docs
 //                .stream()
 //                .map(TodoControllerSpec::getOwner)
 //                .sorted()
 //                .collect(Collectors.toList());
 //        List<String> expectedOwners = Arrays.asList("Jamie", "Pat");
-//        assertEquals("Todos should match", expectedOwners, todos);
+//        assertEquals("Todos should match", expectedOwners, owners);
 //    }
 
-    @Test
-    public void getSamById() {
-        String jsonResult = todoController.getTodo(samsIdString);
-        Document sam = Document.parse(jsonResult);
-        assertEquals("Name should match", "Sam", sam.get("owner"));
-    }
 }

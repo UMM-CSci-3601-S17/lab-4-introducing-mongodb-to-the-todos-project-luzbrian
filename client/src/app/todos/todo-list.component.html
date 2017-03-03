@@ -40,21 +40,16 @@
                 <!--<option value = 1 ><button type  ="button" (click) = "request(searchOwner,searchCategory,searchStatus)" >Complete</button></option>-->
                 <!--<option value = 0 (change) = "request(searchOwner,searchCategory,searchStatus) ">Incomplete</option>-->
             <!--</select>-->
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="input-group">
-                    <input #input type="text" class="form-control" placeholder="Filter By Status"  (input) = "searchStatus= $event.target.value">
+                    <input #input type="text" class="form-control" placeholder="Enter complete or incomplete"  (input) = "searchStatus= $event.target.value">
                     <span class="input-group-btn">
                     <button class="btn btn-default" (click) ="request(searchOwner,searchCategory,searchStatus)">Search</button>
-
                 </span>
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
 
         </div>
-
-        <!--<select [ngModel]="selectedDevice" (ngModelChange)="request($event,$event,$event)" name="status">-->
-            <!--<option [value]="complete" *ngFor="let todo of todos"> {{todo.status ? "Complete" : "Incomplete"}} </option>-->
-        <!--</select>-->
 
     </li>
 
