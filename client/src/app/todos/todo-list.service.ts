@@ -9,51 +9,17 @@ export class TodoListService {
     constructor(private http: Http) {
     }
 
-    getTodos(owner: string, status: string, category: string): Observable<Todo[]> {
-        this.todoUrl = API_URL +"todos";
 
-        if (owner) {
-            this.getTodoByOwner(owner);
-        }
-
-        if (status) {
-           this.getTodoByStatus(status);
-        }
-
-        if (category) {
-            this.getTodoByCategory(category);
-        }
-
+    getTodos(): Observable<Todo[]> {
         return this.http.request(this.todoUrl).map(res => res.json());
     }
-
 
     getTodoById(id: string): Observable<Todo> {
         return this.http.request(this.todoUrl + "/" + id).map(res => res.json());
     }
 
-
-    getTodoByOwner(owner: string): Observable<Todo> {
-        if (owner) {
-            return this.http.request(this.todoUrl + "?owner=" + owner).map(res => res.json());
-        }
+    getFilteredTodos(parameters: string): Observable<Todo[]> {
+        return this.http.request(this.todoUrl + parameters).map(res => res.json());
     }
 
-    getTodoByStatus(status: string): Observable<Todo> {
-        if (!(status) && status !== "") {
-            return this.http.request(this.todoUrl + "?status=" + status).map(res => res.json());
-        }
-        else{
-            return this.http.request(this.todoUrl + "&status=" + status).map(res => res.json());
-        }
-    }
-
-    getTodoByCategory(category: string): Observable<Todo> {
-        if (category) {
-            return this.http.request(this.todoUrl + "?category=" + category).map(res => res.json());
-        }
-        else{
-            return this.http.request(this.todoUrl + "&category=" + category).map(res => res.json());
-        }
-    }
 }
