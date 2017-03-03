@@ -15,12 +15,11 @@
                 <li><a [routerLink]="['/']">Home</a></li>
                 <li><a [routerLink]="['/kittens']">Kittens</a></li>
                 <li><a [routerLink]="['/users']">Users</a></li>
-                <li role="presentation" class="dropdown">
-                    <a [routerLink]="['/todos']" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Todos<span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a [routerLink]="['/users']">Todo Summary</a></li>
-                    </ul>
+                <li>
+                        <a [routerLink]="['/todos']">
+                            Todos
+                            <span class="badge">300</span>
+                        </a>
                 </li>
             </ul>
         </div>
